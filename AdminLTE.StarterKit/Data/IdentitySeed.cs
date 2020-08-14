@@ -1,7 +1,5 @@
 ﻿using AdminLTE.StarterKit.Models;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,15 +15,16 @@ namespace AdminLTE.StarterKit.Data
             await roleManager.CreateAsync(new IdentityRole(Enums.Roles.Moderator.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Enums.Roles.Basic.ToString()));
         }
+
         public static async Task SeedSuperAdminAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             //Seed Default User
             var defaultUser = new ApplicationUser
             {
                 UserName = "superadmin",
-                Email = "superadmin@gmail.com",
-                FirstName = "Mukesh",
-                LastName = "Murugan",
+                Email = "wagner.xu@meehealth.com",
+                FirstName = "Wagner",
+                LastName = "Xu",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
@@ -40,17 +39,17 @@ namespace AdminLTE.StarterKit.Data
                     await userManager.AddToRoleAsync(defaultUser, Enums.Roles.Admin.ToString());
                     await userManager.AddToRoleAsync(defaultUser, Enums.Roles.SuperAdmin.ToString());
                 }
-
             }
         }
+
         public static async Task SeedBasicUserAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             var defaultUser = new ApplicationUser
             {
                 UserName = "basic",
-                Email = "basic@gmail.com",
-                FirstName = "John",
-                LastName = "Doe",
+                Email = "wagnerhsu@hotmail.com",
+                FirstName = "Wagner",
+                LastName = "Hsu",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
@@ -62,7 +61,6 @@ namespace AdminLTE.StarterKit.Data
                     await userManager.CreateAsync(defaultUser, "123Pa$$word.");
                     await userManager.AddToRoleAsync(defaultUser, Enums.Roles.Basic.ToString());
                 }
-
             }
         }
     }

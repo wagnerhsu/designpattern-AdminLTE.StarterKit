@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "ionicons@5.1.2",
+      "files": [ "collection/components/icon/icon.css" ],
+      "destination": "wwwroot/lib/ionicons/css/"
+    }
+  ]
+}

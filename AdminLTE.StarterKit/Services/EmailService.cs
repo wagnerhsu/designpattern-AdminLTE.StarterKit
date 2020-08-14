@@ -1,7 +1,7 @@
 ﻿using AdminLTE.StarterKit.Models;
 using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using NToastNotify;
@@ -13,12 +13,15 @@ namespace AdminLTE.StarterKit.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly SMTPSettings  _settings;
+        private readonly SMTPSettings _settings;
         private readonly IToastNotification _toastNotification;
 
-        public EmailService(IOptions<SMTPSettings> appSettings, IToastNotification toastNotification)
+        public EmailService(IConfiguration configuration,
+            IOptions<SMTPSettings> appSettings,
+            IToastNotification toastNotification)
         {
             _settings = appSettings.Value;
+            _settings.SmtpPass = configuration["password:meehealth:email"];
             this._toastNotification = toastNotification;
         }
 
@@ -53,17 +56,16 @@ namespace AdminLTE.StarterKit.Services
                 builder.HtmlBody = html;
                 email.Body = builder.ToMessageBody();
                 using var smtp = new SmtpClient();
-                smtp.Connect(_settings.SmtpHost, _settings.SmtpPort, SecureSocketOptions.StartTls);
+                smtp.Connect(_settings.SmtpHost, _settings.SmtpPort);
+                smtp.SslProtocols = System.Security.Authentication.SslProtocols.Tls;
                 smtp.Authenticate(_settings.SmtpUser, _settings.SmtpPass);
                 await smtp.SendAsync(email);
                 smtp.Disconnect(true);
-
             }
             catch (System.Exception ex)
             {
-
                 _toastNotification.AddErrorToastMessage(ex.Message);
             }
-        }  
+        }
     }
 }
